@@ -1,11 +1,14 @@
 import axios from 'axios'
 import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { AiOutlineConsoleSql } from 'react-icons/ai';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AuthContext } from '../../Context/AuthProvider';
 import * as AiIcons from 'react-icons/ai'
+import AlignItemsList from '../Menus/Sidebar';
+import * as IoArrow from 'react-icons/io5'
 
 export default function BlogDetails() {
+    const navigate = useNavigate()
     let color = -1;
     const colors = ['text-pink-500','text-sky','text-purple','text-yellow']
     const user = useContext(AuthContext)
@@ -37,7 +40,8 @@ export default function BlogDetails() {
                 author:user._id,
                 body:comment
             });
-            console.log(response)
+            console.log(response);
+            getComments()
         }
         catch(e){
             console.log(e)
@@ -50,17 +54,17 @@ export default function BlogDetails() {
     }
     const deleteComment = async(commentId)=>{
         console.log(id)
-            const response = await axios.delete(`http://localhost:5000/deleteComment/${commentId}`,{
+        console.log(commentId)
+            const response = await axios.delete(`http://localhost:5000/deleteComment/62d7df3f756d8ae58a6c2c5e`,{
                 blogId:"62d70a404390424da443a851",
-                author:user._id
+                author:"62d3da68678ae4ad9f6f9fdf"
             });
             console.log(response)
-  
     }
   return (
     <Fragment>
+        <IoArrow.IoArrowBackOutline className= "text-white text-6xl ml-9 mt-24 rounded-full hover:border-1 transition ease-in" onClick={()=>navigate(-1)}/>
         <div className='text-white p-24 px-32'>
-        
         <h1 className='text-6xl text-left font-bold mt-11 text-white'> {blog.title}</h1>
         <h1 className='mt-7 font-light text-xl opacity-50'>Posted By</h1>
         <h1 className=' font-bold text-2xl'>{name}</h1>
@@ -70,16 +74,16 @@ export default function BlogDetails() {
             if(index>=colors.length)
              color = -1
             color++;
-         return <span className={`mr-11 ${colors[color]} bg-gray-900 cursor-pointer hover:scale-110 transition-all  ease-in hover:border-2 px-4 py-2 rounded-2xl`} key={index}>#{element}</span>            })}
+         return <span onClick={()=>navigate(`/filter/${element}`,{replace:true})} className={`mr-11 ${colors[color]} bg-gray-900 cursor-pointer hover:scale-110 transition-all  ease-in hover:border-1 px-4 py-2 rounded-2xl`} key={index}>{element}</span>            })}
         </div>
-        <div className="blogBody mt-24 border-2 p-4">
+        <div className="blogBody mt-24 p-4">
         <p className='text-left text-3xl mt-9' dangerouslySetInnerHTML={{__html: blog.body}}/>
          </div>
               <div className="comments mt-11">
                 <h2 className='text-white text-3xl'>Comments</h2>
         {comments.length ===0? <p className='text-slate-400'>No comments yet!</p>:comments.map((element,index)=>{
             let {author} = element
-            return  <div className='my-4 text-white p-5 bg-zinc-900 hover:bg-white hover:text-black transition ease-in rounded-lg hover:border-2 '>
+            return  <div className='my-4 text-white p-5 bg-zinc-900 hover:bg-white hover:text-black transition ease-in rounded-lg hover:border-1 '>
                 <p className='text-xl font-bold mb-4'>{author.firstName} {author.lastName} <span className = "font-light opacity-40 text-base">@{author.username}</span> </p>
                 <div className='flex justify-between'>
                 <p className=''> {element.body} </p>

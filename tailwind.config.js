@@ -10,8 +10,10 @@ module.exports = {
         "purple":"#7403fd",
         "yellow":"#fed400",
         "black":"#131313"
-  
       },
+      borderWidth:{
+        "1":"1px"
+      }
     }
   },
   plugins: [],

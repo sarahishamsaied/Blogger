@@ -1,44 +1,75 @@
-import React, { useEffect ,useState} from 'react'
-import GetCookie from '../../Hooks/GetCookie'
-import jwtDecode from 'jwt-decode'
-import axios from 'axios'
-import BlogCard from '../Blog/BlogCard'
-import {useNavigate} from 'react-router-dom'
-import { useContext } from 'react'
-import { AuthContext } from '../../Context/AuthProvider'
+import React,{useState,useEffect} from 'react'
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import GetCookie from '../../Hooks/GetCookie';
+import jwtDecode from 'jwt-decode';
+import Sidebar from '../Sidebar/Sidebar';
+import UserContainer from '../UserProfile/UserContainer';
+import Leftbar from '../UserProfile/Leftbar';
+import {motion} from 'framer-motion' 
+import Explore from '../Explore/Explore';
+import Feed from '../Feed/Feed';
+import ReadingList from '../ReadlingList/ReadingList';
+import UserProfile from '../UserProfile/UserProfile';
+import BlogForm from '../Blog/BlogForm'
+import FilteredBlogs from '../Blog Home Page/FilteredBlogs';
 export default function Home() {
-    const navigate = useNavigate()
-    const user = useContext(AuthContext)
-    const [userData,setUserData] = useState(user)
-    const [following,setFollowing] = useState([])
-    const [blogs,setBlogs] = useState([])
-    useEffect(()=>{
+  const [page,setPage] = useState("feed")
+  const navigate = useNavigate();
+  const [userData,setUserData] = useState({});
+  const [blogs,setBlogs] = useState([]);
+  const [name,setName] = useState("");
+  const [lastName,setLastName] = useState("");
+  const [followers,setFollowers] = useState([]);
+  const [following,setFollowing] = useState([]);
+  const [followersClicked,setFollowersClicked] = useState(false);
+  const [followingClicked,setFollowingClicked] = useState(false);
+  const [interests,setInterests] = useState([]);
+  useEffect(()=>{
+  getUserData()
+  },[]);
+  useEffect(()=>{
 
-      async function getFollowing(){
-        const token = JSON.parse(GetCookie("token"));
-        console.log(token)
-        const {id} = jwtDecode(token)
-        const {data} = await axios.get(`http://localhost:5000/getFollowing/${id}`);
-        setFollowing(data.data.blogs)
-        setBlogs(data.data.blogs)
-      }
-      getFollowing()
-    },[])
-  
+      getUserData()
+  },[])
+const getUserData = async()=>{
+  console.log("dsjkdbf")
+  const token = GetCookie("token");
+  const {id} = jwtDecode(token);
+  console.log(id)
+  const {data:{data}} = await axios.get(`http://localhost:5000/getUserById/${id}`)
+  setUserData(data)
+  setName(`${data.firstName}`);
+  setLastName(data.lastName);
+  setFollowers(data.followers);
+  setFollowing(data.following);
+  setBlogs(data.blogs)
+  setInterests(data.interests)
+  console.log(data.interests)
+}
   return (
-    <div className='bg-black text-white '>
-        <div className="homeHeader flex justify-between p-24">
-        {/* <h1 className='font-bold text-4xl'>Welcome back. {user.firstName}</h1> */}
-        <button onClick={()=>navigate("/createPost")} type="button" class="text-white bg-blue-700 hover:bg-blue-800  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-purple dark:hover:bg-yellow hover:text-black transition ease-in dark:focus:bg-purple">Create Post</button>
-        </div>
-        {/* <div className={!user.profilePic?'border-2 rounded-full icon  bg-purple text-white':'hidden'}> <span className=' w-full   text-center m-auto'>{user.username[0]}</span> </div> */}
-        <div className="blogs grid grid-flow-row place-content-center ml-24 mt-24">
-    {blogs&&blogs.map((element,index)=>{
-      return <BlogCard title  = {element.title} tags = {element.tags} nComments = {element.comments.length} nUpVotes = {element.upVotes.length}  nDownVotes = {element.downVotes.length} date = {element.createdAt} key = {index}/>
-    })}
-        </div>
- 
-    
+      <div className='flex h-screen overflow-hidden'>
+            <div>
+            <Sidebar username = {userData.username} setPage = {setPage}/>
+            </div>
+            <motion.div className=' w-full' animate = {{opacity:page === 'explore'?1:0,display:page === 'explore'?'block':'none'}} >
+              <Explore interests = {interests} name = {`${name} ${lastName}`}/>
+            </motion.div>
+            <motion.div className=' w-full' animate = {{opacity:page === 'createBlog'?1:0,display:page === 'createBlog'?'block':'none'}} >
+              <BlogForm/>
+            </motion.div>
+            <motion.div className=' w-full' animate = {{opacity:page === 'feed'?1:0,display:page === 'feed'?'block':'none'}}>
+              <Feed/>
+            </motion.div>
+            <motion.div className='w-full' animate = {{opacity:page === 'readingList'?1:0,display:page === 'readingList'?'block':'none'}}>
+              <ReadingList/>
+            </motion.div>
+            <motion.div className='w-full' animate = {{opacity:page === 'profile'?1:0,display:page === 'profile'?'block':'none'}}>
+              <UserProfile/>
+            </motion.div>
+            <motion.div className='w-full' animate = {{opacity:page === 'filteredBlogs'?1:0,display:page === 'filteredBlogs'?'block':'none'}}>
+              <FilteredBlogs setPage = {setPage}/>
+            </motion.div>
     </div>
   )
 }

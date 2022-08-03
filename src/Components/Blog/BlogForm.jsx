@@ -32,10 +32,9 @@ export default function BlogForm() {
           console.log(e)
           setStatusMessage("Error posting blog");
         }
-
     };
   return (
-    <div className='text-white  bg-black  p-32'>
+    <div className='text-white  bg-black  p-32 h-screen overflow-y-scroll'>
         <h2 className='font-bold text-5xl mb-5'>Create Blog</h2>
         <form action="  " method='POST' onSubmit={handleSubmit} className = "p-32 ">
             <label htmlFor="" className='my-7 text-3xl'>Blog Title</label>

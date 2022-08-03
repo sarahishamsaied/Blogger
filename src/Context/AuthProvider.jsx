@@ -9,13 +9,16 @@ export default function AuthProvider({children}) {
   const [user,setUser] = useState({})
   const getUserData = async()=>{
     console.log("CONTEXT  ============================================")
-    const token = JSON.parse(GetCookie("token"))
-    console.log(token)
-    let {id} = jwtDecode(token)
-    console.log(id)
-    const user = await axios.get(`http://localhost:5000/getUserById/${id}`);
-    setUser(user.data.data)
-    console.log(user.data.data)
+    if(GetCookie("token"))
+    {
+      const token = GetCookie("token")
+      console.log(token)
+      let {id} = jwtDecode(token)
+      console.log(id)
+      const user = await axios.get(`http://localhost:5000/getUserById/${id}`);
+      setUser(user.data.data)
+      console.log(user.data.data)
+    }
 }
 useEffect(()=>{
   getUserData()

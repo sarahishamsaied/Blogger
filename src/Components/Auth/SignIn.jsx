@@ -70,7 +70,8 @@ export default function SignIn() {
             console.log(data)
             setErrorMessage('')
             SetCookie("token",JSON.stringify(data.token));
-            navigate("/home")
+            navigate("/profile");
+            window.location.reload();
         } catch (error) {
             const {response:{data}} = error;
             console.log(data)
