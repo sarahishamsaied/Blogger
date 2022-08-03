@@ -8,7 +8,7 @@ Blogger
 </p>
 
 
-<p align = "center">An upcoming full stack web app used for writing tech blogs</p>
+## <p align = "center">An upcoming full stack web app used for writing tech blogs</p>
 
 ![blogger-Trim](https://user-images.githubusercontent.com/71923204/179902716-6cfb0de9-514f-4eb0-ad24-c4e582951c84.gif)
 
