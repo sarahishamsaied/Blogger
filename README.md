@@ -27,9 +27,15 @@ Blogger
 
 ![Screenshot 2022-08-03 024000](https://user-images.githubusercontent.com/71923204/182500620-ecac21b9-0fde-4acb-941b-ce56921db1e5.png)
 
-
 ## ***User Profile*** 
+
+![Screenshot 2022-08-03 025327](https://user-images.githubusercontent.com/71923204/182501234-931bb97e-2241-4d37-adf2-b5b32ecf8afd.png)
+
+
+## ***Current User Profile*** 
+
 ![Screenshot 2022-08-03 024045](https://user-images.githubusercontent.com/71923204/182500483-a74b8c2a-3a44-4dc0-a1ed-bb4b127eb043.png)
+
 
 
 ## ***News Feed*** 
